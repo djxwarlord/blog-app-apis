@@ -6,3 +6,10 @@
 /vcs.xml
 .idea/
 *.iml
+target/
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
