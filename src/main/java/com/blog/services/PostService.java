@@ -1,6 +1,7 @@
 package com.blog.services;
 
 import com.blog.payloads.PostDto;
+import com.blog.payloads.PostResponse;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.List;
@@ -10,8 +11,8 @@ public interface PostService {
     PostDto updatePost(PostDto postDto, Integer postId);
     void deletePost(Integer postId);
     PostDto getPostByPostId(Integer postId);
-    List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize);
-    List<PostDto> getAllPostsByUser(Integer userId, Integer pageNumber, Integer pageSize);
-    List<PostDto> getAllPostsByCategory(Integer categoryId, Integer pageNumber, Integer pageSize);
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize);
+    PostResponse getAllPostsByUser(Integer userId, Integer pageNumber, Integer pageSize);
+    PostResponse getAllPostsByCategory(Integer categoryId, Integer pageNumber, Integer pageSize);
     List<PostDto> searchPosts(String keyword);
 }
