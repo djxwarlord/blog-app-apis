@@ -20,7 +20,7 @@ public class PostDto {
     private String title;
 
     @NotEmpty
-    @Size(max = 20000, message = "Content cannot exceed 20 characters !!")
+    @Size(max = 20000, message = "Content cannot exceed 20K characters !!")
     private String content;
 
     private String imageName;
