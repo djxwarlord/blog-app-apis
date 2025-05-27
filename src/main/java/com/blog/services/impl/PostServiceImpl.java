@@ -1,5 +1,6 @@
 package com.blog.services.impl;
 
+import com.blog.config.AppConstants;
 import com.blog.entities.Category;
 import com.blog.entities.Post;
 import com.blog.entities.User;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -42,7 +44,7 @@ public class PostServiceImpl implements PostService {
         User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User", "UserId", userId));
         Category category = this.categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
         post.setCreatedDate(new Date());
-        post.setImageName("default.png");
+        post.setImageName(AppConstants.DEFAULT_IMG_NAME);
         post.setUser(user);
         post.setCategory(category);
         Post createdPost = this.postRepo.save(post);
@@ -73,8 +75,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(AppConstants.SORT_DIR_VALUE) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Post> posts = this.postRepo.findAll(pageable);
         PostResponse postResponse = new PostResponse();
 
@@ -126,6 +129,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> searchPosts(String keyword) {
-        return List.of();
+        List<Post> posts = this.postRepo.findByTitleContaining(keyword);
+        List<PostDto> postDtos = posts.stream().map(p -> this.modelMapper.map(p, PostDto.class)).toList();
+        return postDtos;
     }
 }
