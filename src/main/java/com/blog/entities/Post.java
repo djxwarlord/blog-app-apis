@@ -1,12 +1,15 @@
 package com.blog.entities;
 
+import com.blog.payloads.CommentDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +40,8 @@ public class Post {
     @ManyToOne
     private User user;
 
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
 
 }
